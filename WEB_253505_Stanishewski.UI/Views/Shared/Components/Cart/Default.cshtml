@@ -1,0 +1,4 @@
+﻿@model WEB_253505_Stanishewski.UI.Components.Cart
+<div class="cart-info">
+    @Model.TotalPrice.ToString("C", new System.Globalization.CultureInfo("be-BY")) <i class="fa-solid fa-cart-shopping"></i> @Model.ItemCount
+</div>
