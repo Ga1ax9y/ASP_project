@@ -19,4 +19,8 @@
     <None Include="wwwroot\images\default-profile-picture.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WEB_253505_Stanishewski.Domain\WEB_253505_Stanishewski.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

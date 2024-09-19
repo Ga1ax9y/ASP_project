@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WEB_253505_Stanishewski.UI.Data;
+using WEB_253505_Stanishewski.UI.Extensions;
 
 namespace WEB_253505_Stanishewski.UI
 {
@@ -19,6 +20,7 @@ namespace WEB_253505_Stanishewski.UI
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.RegisterCustomServices();
 
             var app = builder.Build();
 
