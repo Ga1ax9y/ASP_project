@@ -1,0 +1,6 @@
+@WEB_253505_Stanishewski.API_HostAddress = http://localhost:5043
+
+GET {{WEB_253505_Stanishewski.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

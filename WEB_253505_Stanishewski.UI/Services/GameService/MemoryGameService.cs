@@ -23,7 +23,7 @@ namespace WEB_253505_Stanishewski.UI.Services.GameService
             _games = new List<Game>
             {
                 new Game { Id = 1, Title="Elden ring",
-                Description="Крутая игра",
+                Description="Хорошая игра",
                 Price=50, Image="Images/Elden_Ring.jpg",
                 Category=_categories.Find(c=>c.NormalizedName.Equals("role-playing"))
                 },
