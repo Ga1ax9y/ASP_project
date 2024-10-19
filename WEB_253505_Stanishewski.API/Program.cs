@@ -1,6 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
 using WEB_253505_Stanishewski.API.Data;
+using WEB_253505_Stanishewski.API.Services.CategoryService;
+using WEB_253505_Stanishewski.API.Services.GameService;
+using WEB_253505_Stanishewski.Domain.Entities;
 
 namespace WEB_253505_Stanishewski.API
 {
@@ -19,6 +22,8 @@ namespace WEB_253505_Stanishewski.API
             string connectionString = builder.Configuration.GetConnectionString("Default");  
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
 
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IGameService, GameService>();
             var app = builder.Build();
             
             await DbInitializer.SeedData(app);
