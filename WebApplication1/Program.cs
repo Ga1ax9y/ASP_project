@@ -1,12 +1,9 @@
 
-using Microsoft.EntityFrameworkCore;
-using WEB_253505_Stanishewski.API.Data;
-
-namespace WEB_253505_Stanishewski.API
+namespace WebApplication1
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -16,12 +13,8 @@ namespace WEB_253505_Stanishewski.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            string connectionString = builder.Configuration.GetConnectionString("Default");  
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
 
             var app = builder.Build();
-            
-            await DbInitializer.SeedData(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

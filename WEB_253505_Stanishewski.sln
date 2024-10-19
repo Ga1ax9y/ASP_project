@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_253505_Stanishewski.UI"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_253505_Stanishewski.Domain", "WEB_253505_Stanishewski.Domain\WEB_253505_Stanishewski.Domain.csproj", "{5169AFD2-0C56-49B0-9579-018B0602B96B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_253505_Stanishewski.API", "WEB_253505_Stanishewski.API\WEB_253505_Stanishewski.API.csproj", "{F27CCEEA-E7FF-4F8D-806F-7EB59F5F1D3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_253505_Stanishewski.API", "WEB_253505_Stanishewski.API\WEB_253505_Stanishewski.API.csproj", "{F27CCEEA-E7FF-4F8D-806F-7EB59F5F1D3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
