@@ -39,7 +39,7 @@ namespace WEB_253505_Stanishewski.API
 
             app.UseAuthorization();
 
-
+            app.UseStaticFiles();
             app.MapControllers();
 
             app.Run();

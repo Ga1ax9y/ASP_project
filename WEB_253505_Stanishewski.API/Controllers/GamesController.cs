@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WEB_253505_Stanishewski.API.Data;
+using WEB_253505_Stanishewski.API.Services.GameService;
 using WEB_253505_Stanishewski.Domain.Entities;
+using WEB_253505_Stanishewski.Domain.Models;
 
 namespace WEB_253505_Stanishewski.API.Controllers
 {
@@ -14,32 +17,45 @@ namespace WEB_253505_Stanishewski.API.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
-        private readonly AppDbContext _context;
-
-        public GamesController(AppDbContext context)
+        private readonly IGameService _gameService;
+        public GamesController(IGameService gameService)
         {
-            _context = context;
+            _gameService = gameService;
+        }
+
+        // GET: api/Dishes/category/{category}?pageNo=1&pageSize=3
+        [HttpGet("category/{category}")]
+        public async Task<ActionResult<ResponseData<List<Game>>>> GetDishesByCategory(string category, int pageNo = 1, int pageSize = 3)
+        {
+            return Ok(await _gameService.GetProductListAsync(
+                category,
+                pageNo,
+                pageSize));
         }
 
         // GET: api/Games
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetGames()
+        public async Task<ActionResult<ResponseData<List<Game>>>> GetGames(string? category,int pageNo = 1,int pageSize = 3)
         {
-            return await _context.Games.ToListAsync();
+            return Ok(await _gameService.GetProductListAsync(
+           category,
+           pageNo,
+           pageSize));
         }
+
 
         // GET: api/Games/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(int id)
         {
-            var game = await _context.Games.FindAsync(id);
+            var game = await _gameService.GetProductByIdAsync(id);
 
             if (game == null)
             {
                 return NotFound();
             }
 
-            return game;
+            return Ok(game);
         }
 
         // PUT: api/Games/5
@@ -51,24 +67,7 @@ namespace WEB_253505_Stanishewski.API.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(game).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GameExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _gameService.UpdateProductAsync(id, game);
 
             return NoContent();
         }
@@ -76,33 +75,24 @@ namespace WEB_253505_Stanishewski.API.Controllers
         // POST: api/Games
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Game>> PostGame(Game game)
+        public async Task<ActionResult<ResponseData<Game>>> PostGame(Game game)
         {
-            _context.Games.Add(game);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetGame", new { id = game.Id }, game);
+            var result = await _gameService.CreateProductAsync(game);
+            return Ok(result);
         }
 
         // DELETE: api/Games/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(int id)
         {
-            var game = await _context.Games.FindAsync(id);
-            if (game == null)
-            {
-                return NotFound();
-            }
-
-            _context.Games.Remove(game);
-            await _context.SaveChangesAsync();
-
+            await _gameService.DeleteProductAsync(id);
             return NoContent();
         }
 
-        private bool GameExists(int id)
+        public async Task<ActionResult<ResponseData<string>>> SaveImage(int id, IFormFile formFile)
         {
-            return _context.Games.Any(e => e.Id == id);
+            var result = await _gameService.SaveImageAsync(id, formFile);
+            return Ok(result);
         }
     }
 }

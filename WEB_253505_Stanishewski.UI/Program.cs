@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WEB_253505_Stanishewski.UI.APIConnection;
+using WEB_253505_Stanishewski.UI.APIConnection.Services;
 using WEB_253505_Stanishewski.UI.Data;
 using WEB_253505_Stanishewski.UI.Extensions;
+using WEB_253505_Stanishewski.UI.Services.GameService;
 
 namespace WEB_253505_Stanishewski.UI
 {
@@ -10,6 +13,10 @@ namespace WEB_253505_Stanishewski.UI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var uriData = builder.Configuration.GetSection("UriData").Get<UriData>();
+
+
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -20,7 +27,7 @@ namespace WEB_253505_Stanishewski.UI
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
-            builder.RegisterCustomServices();
+            builder.RegisterCustomServices(uriData);
 
             var app = builder.Build();
 

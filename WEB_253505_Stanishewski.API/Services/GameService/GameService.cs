@@ -26,22 +26,22 @@ namespace WEB_253505_Stanishewski.API.Services.GameService
         }
         public async Task DeleteProductAsync(int id)
         {
-            var dish = await _context.Games.FindAsync(id);
-            if (dish == null)
+            var game = await _context.Games.FindAsync(id);
+            if (game == null)
             {
-                throw new Exception("Блюдо не найдено");
+                throw new Exception("Игра не найдена!");
             }
-            _context.Games.Remove(dish);
+            _context.Games.Remove(game);
             await _context.SaveChangesAsync();
         }
         public async Task<ResponseData<Game>> GetProductByIdAsync(int id)
         {
-            var dish = await _context.Games.Include(d => d.Category).FirstOrDefaultAsync(d => d.Id == id);
-            if (dish == null)
+            var game = await _context.Games.Include(d => d.Category).FirstOrDefaultAsync(d => d.Id == id);
+            if (game == null)
             {
-                return ResponseData<Game>.Error("Товар не найден");
+                return ResponseData<Game>.Error("Игра не найдена");
             }
-            return ResponseData<Game>.Success(dish);
+            return ResponseData<Game>.Success(game);
         }
         public async Task<ResponseData<ListModel<Game>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1, int pageSize = 3)
         {
@@ -57,7 +57,7 @@ namespace WEB_253505_Stanishewski.API.Services.GameService
             }
             int totalPages = (int)Math.Ceiling(count / (double)pageSize);
             if (pageNo > totalPages)
-                return ResponseData<ListModel<Game>>.Error("Нет такой страницы");
+                return ResponseData<ListModel<Game>>.Error("Несуществующая страница");
             dataList.Items = await query
                 .OrderBy(d => d.Id)
                 .Skip((pageNo - 1) * pageSize)
@@ -73,7 +73,7 @@ namespace WEB_253505_Stanishewski.API.Services.GameService
             var existingDish = await _context.Games.FindAsync(id);
             if (existingDish == null)
             {
-                throw new Exception("Блюдо не найдено");
+                throw new Exception("Игра не найдена");
             }
             existingDish.Title = product.Title;
             existingDish.Description = product.Description;
