@@ -3,6 +3,7 @@ using System.Text;
 using WEB_253505_Stanishewski.Domain.Models;
 using WEB_253505_Stanishewski.UI.Services.GameService;
 using WEB_253505_Stanishewski.Domain.Entities;
+using WEB_253505_Stanishewski.UI.Services.FileService;
 
 namespace WEB_253505_Stanishewski.UI.APIConnection.Services
 {
@@ -12,9 +13,9 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
         private readonly string _pageSize;
         private readonly JsonSerializerOptions _serializerOptions;
         private readonly ILogger<ApiGameService> _logger;
-        public ApiGameService(HttpClient httpClient,
-         IConfiguration configuration,
-         ILogger<ApiGameService> logger)
+        private readonly IFileService _fileService;
+        public ApiGameService(HttpClient httpClient,IConfiguration configuration,
+                                    ILogger<ApiGameService> logger, IFileService fileService)
         {
             _httpClient = httpClient;
             _pageSize = configuration.GetSection("ItemsPerPage").Value;
@@ -23,6 +24,7 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
             _logger = logger;
+            _fileService = fileService;
         }
         public async Task<ResponseData<ListModel<Game>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1)
         {
@@ -73,6 +75,15 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
         }
         public async Task<ResponseData<Game>> CreateProductAsync(Game product,IFormFile? formFile)
         {
+            product.Image = "Images/noimage.jpg";
+            if (formFile != null)
+            {
+                var imageUrl = await _fileService.SaveFileAsync(formFile);
+                if (!string.IsNullOrEmpty(imageUrl))
+                {
+                    product.Image = imageUrl; // Установить URL загруженного изображения
+                }
+            }
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Games");
 
             var response = await _httpClient.PostAsJsonAsync(
