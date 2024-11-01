@@ -23,7 +23,7 @@ namespace WEB_253505_Stanishewski.API.Controllers
             _gameService = gameService;
         }
 
-        // GET: api/Dishes/category/{category}?pageNo=1&pageSize=3
+        // GET: api/Games/category/{category}?pageNo=1&pageSize=3
         [HttpGet("category/{category}")]
         public async Task<ActionResult<ResponseData<List<Game>>>> GetDishesByCategory(string category, int pageNo = 1, int pageSize = 3)
         {

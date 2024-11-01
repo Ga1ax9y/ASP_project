@@ -102,18 +102,47 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
             .LogError($"-----> object not created. Error: { response.StatusCode.ToString()}");
             return ResponseData<Game>.Error($"Объект не добавлен. Error: {response.StatusCode.ToString()}");
         }
-        public Task<ResponseData<Game>> GetProductByIdAsync(int id)
+        public async Task<ResponseData<Game>> GetProductByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + $"games/{id}");
+            var response = await _httpClient.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadFromJsonAsync<ResponseData<Game>>(_serializerOptions);
+                return data;
+            }
+            _logger.LogError($"-----> Продукт не найден. Error: {response.StatusCode}");
+            return ResponseData<Game>.Error($"Продукт не найден. Error: {response.StatusCode}");
         }
-        public Task UpdateProductAsync(int id, Game game, IFormFile? formFile)
+        public async Task UpdateProductAsync(int id, Game game, IFormFile? formFile)
         {
-            throw new NotImplementedException();
+            if (formFile != null)
+            {
+                var imageUrl = await _fileService.SaveFileAsync(formFile);
+                if (!string.IsNullOrEmpty(imageUrl))
+                {
+                    if (!string.IsNullOrEmpty(game.Image) && game.Image != "Images/noimage.jpg")
+                    {
+                        await _fileService.DeleteFileAsync(game.Image);
+                    }
+                    game.Image = imageUrl;
+                }
+            }
         }
-        public Task DeleteProductAsync(int id)
+        public async Task DeleteProductAsync(int id)
         {
-            throw new NotImplementedException();
-        }
+                var product = await GetProductByIdAsync(id);
+                var uri = new Uri($"{_httpClient.BaseAddress.AbsoluteUri}games/{id}");
+                var response = await _httpClient.DeleteAsync(uri);
+
+                Game data = product.Data;
+                await _fileService.DeleteFileAsync(data.Image);
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogError($"-----> object not deleted. Error: {response.StatusCode}");
+                    throw new InvalidOperationException($"Объект не удален. Error: {response.StatusCode}");
+                }
+            }
 
     }
 }
