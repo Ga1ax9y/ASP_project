@@ -128,6 +128,15 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
                     game.Image = imageUrl;
                 }
             }
+            // Формирование URI для запроса обновления
+            var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + $"games/{id}");
+            // Отправка запроса на обновление объекта
+            var response = await _httpClient.PutAsJsonAsync(uri, game, _serializerOptions);
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogError($"-----> Объект не обновлен. Error: {response.StatusCode}");
+                throw new InvalidOperationException($"Объект не обновлен. Error: {response.StatusCode}");
+            }
         }
         public async Task DeleteProductAsync(int id)
         {
