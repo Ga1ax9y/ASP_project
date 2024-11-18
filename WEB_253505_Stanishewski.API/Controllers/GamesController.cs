@@ -25,7 +25,8 @@ namespace WEB_253505_Stanishewski.API.Controllers
 
         // GET: api/Games/category/{category}?pageNo=1&pageSize=3
         [HttpGet("category/{category}")]
-        public async Task<ActionResult<ResponseData<List<Game>>>> GetDishesByCategory(string category, int pageNo = 1, int pageSize = 3)
+        [AllowAnonymous]
+        public async Task<ActionResult<ResponseData<List<Game>>>> GetGamesByCategory(string category, int pageNo = 1, int pageSize = 3)
         {
             return Ok(await _gameService.GetProductListAsync(
                 category,
@@ -35,6 +36,7 @@ namespace WEB_253505_Stanishewski.API.Controllers
 
         // GET: api/Games
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<ResponseData<List<Game>>>> GetGames(string? category,int pageNo = 1,int pageSize = 3)
         {
             return Ok(await _gameService.GetProductListAsync(
@@ -46,6 +48,7 @@ namespace WEB_253505_Stanishewski.API.Controllers
 
         // GET: api/Games/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Game>> GetGame(int id)
         {
             var game = await _gameService.GetProductByIdAsync(id);
@@ -61,6 +64,7 @@ namespace WEB_253505_Stanishewski.API.Controllers
         // PUT: api/Games/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Policy = "admin")]
         public async Task<IActionResult> PutGame(int id, Game game)
         {
             if (id != game.Id)
@@ -75,6 +79,7 @@ namespace WEB_253505_Stanishewski.API.Controllers
         // POST: api/Games
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Policy = "admin")]
         public async Task<ActionResult<ResponseData<Game>>> PostGame(Game game)
         {
             var result = await _gameService.CreateProductAsync(game);
@@ -83,12 +88,15 @@ namespace WEB_253505_Stanishewski.API.Controllers
 
         // DELETE: api/Games/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "admin")]
         public async Task<IActionResult> DeleteGame(int id)
         {
             await _gameService.DeleteProductAsync(id);
             return NoContent();
         }
 
+        [HttpPost("{id}/SaveImage")]
+        [Authorize(Policy = "admin")]
         public async Task<ActionResult<ResponseData<string>>> SaveImage(int id, IFormFile formFile)
         {
             var result = await _gameService.SaveImageAsync(id, formFile);
