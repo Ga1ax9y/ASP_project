@@ -4,6 +4,7 @@ using WEB_253505_Stanishewski.UI.Services.CategoryService;
 using WEB_253505_Stanishewski.UI.Services.GameService;
 using WEB_253505_Stanishewski.UI.Services.FileService;
 using WEB_253505_Stanishewski.UI.HelperClasses;
+using WEB_253505_Stanishewski.UI.Services.Authentication;
 
 namespace WEB_253505_Stanishewski.UI.Extensions
 {
@@ -18,6 +19,7 @@ namespace WEB_253505_Stanishewski.UI.Extensions
             builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(opt =>opt.BaseAddress = new Uri(uriData.ApiUri));
             builder.Services.AddHttpClient<IFileService, ApiFileService>(opt =>opt.BaseAddress = new Uri($"{uriData.ApiUri}Files"));
             builder.Services.Configure<KeycloakData>(builder.Configuration.GetSection("Keycloak"));
+            builder.Services.AddHttpClient<ITokenAccessor, KeycloakTokenAccessor>();
         }
     }
 

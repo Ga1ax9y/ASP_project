@@ -28,8 +28,7 @@ namespace WEB_253505_Stanishewski.UI
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            var keycloakData =
-builder.Configuration.GetSection("Keycloak").Get<KeycloakData>();
+            var keycloakData = builder.Configuration.GetSection("Keycloak").Get<KeycloakData>();
 
             builder.Services
                 .AddAuthentication(options =>

@@ -4,6 +4,7 @@ using WEB_253505_Stanishewski.Domain.Models;
 using WEB_253505_Stanishewski.UI.Services.GameService;
 using WEB_253505_Stanishewski.Domain.Entities;
 using WEB_253505_Stanishewski.UI.Services.FileService;
+using WEB_253505_Stanishewski.UI.Services.Authentication;
 
 namespace WEB_253505_Stanishewski.UI.APIConnection.Services
 {
@@ -14,8 +15,9 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
         private readonly JsonSerializerOptions _serializerOptions;
         private readonly ILogger<ApiGameService> _logger;
         private readonly IFileService _fileService;
+        ITokenAccessor _tokenAccessor;
         public ApiGameService(HttpClient httpClient,IConfiguration configuration,
-                                    ILogger<ApiGameService> logger, IFileService fileService)
+                                    ILogger<ApiGameService> logger, IFileService fileService, ITokenAccessor tokenAccessor)
         {
             _httpClient = httpClient;
             _pageSize = configuration.GetSection("ItemsPerPage").Value;
@@ -25,6 +27,7 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
             };
             _logger = logger;
             _fileService = fileService;
+            _tokenAccessor = tokenAccessor;
         }
         public async Task<ResponseData<ListModel<Game>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1)
         {
@@ -53,6 +56,7 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
             }
 
             // отправить запрос к API
+            await _tokenAccessor.SetAuthorizationHeaderAsync(_httpClient);
             var response = await _httpClient.GetAsync(
             new Uri(urlString.ToString()));
 
@@ -85,7 +89,7 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
                 }
             }
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Games");
-
+            await _tokenAccessor.SetAuthorizationHeaderAsync(_httpClient);
             var response = await _httpClient.PostAsJsonAsync(
             uri,
             product,
@@ -105,6 +109,7 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
         public async Task<ResponseData<Game>> GetProductByIdAsync(int id)
         {
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + $"games/{id}");
+            await _tokenAccessor.SetAuthorizationHeaderAsync(_httpClient);
             var response = await _httpClient.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
@@ -116,6 +121,7 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
         }
         public async Task UpdateProductAsync(int id, Game game, IFormFile? formFile)
         {
+            await _tokenAccessor.SetAuthorizationHeaderAsync(_httpClient);
             if (formFile != null)
             {
                 var imageUrl = await _fileService.SaveFileAsync(formFile);
@@ -142,6 +148,8 @@ namespace WEB_253505_Stanishewski.UI.APIConnection.Services
         {
                 var product = await GetProductByIdAsync(id);
                 var uri = new Uri($"{_httpClient.BaseAddress.AbsoluteUri}games/{id}");
+                await _tokenAccessor.SetAuthorizationHeaderAsync(_httpClient);
+
                 var response = await _httpClient.DeleteAsync(uri);
 
                 Game data = product.Data;
