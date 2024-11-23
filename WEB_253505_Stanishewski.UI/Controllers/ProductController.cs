@@ -6,6 +6,7 @@ using WEB_253505_Stanishewski.UI.Services.GameService;
 
 namespace WEB_253505_Stanishewski.UI.Controllers
 {
+    [Route("catalog")]
     public class ProductController : Controller
     {
         private readonly IGameService _gameService;
@@ -15,6 +16,7 @@ namespace WEB_253505_Stanishewski.UI.Controllers
             _gameService = gameService;
             _categoryService = categoryService;
         }
+        [HttpGet("{category?}")]
         public async Task<IActionResult> Index(string? category, int pageNo=1)
         {
             var productResponse = await _gameService.GetProductListAsync(category, pageNo);

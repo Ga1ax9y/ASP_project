@@ -11,7 +11,7 @@ namespace WEB_253505_Stanishewski.UI.TagHelpers
         [HtmlAttributeName("total-pages")]
         public int TotalPages { get; set; } = 1;
         [HtmlAttributeName("category")]
-        public string category { get; set; }
+        public string category { get; set; } = "";
         [HtmlAttributeName("is-admin")]
         public bool IsAdmin { get; set; } = false;
         private LinkGenerator _linkGenerator;
@@ -37,7 +37,7 @@ namespace WEB_253505_Stanishewski.UI.TagHelpers
             }
             var prevLink = new TagBuilder("a");
             int? prevPage = CurrentPage == 1 ? 1 : CurrentPage - 1;
-            var prevUrl = _linkGenerator.GetPathByAction("Index", controllerName, new { pageNo = prevPage, category = category });
+            var prevUrl = _linkGenerator.GetPathByAction("Index", controllerName, new { pageNo = prevPage, category });
             prevLink.Attributes.Add("href", prevUrl);
             prevLink.Attributes["class"] = "page-link ajax-link";
             prevLink.InnerHtml.AppendHtml("&laquo");
@@ -55,7 +55,7 @@ namespace WEB_253505_Stanishewski.UI.TagHelpers
                     currentLi.Attributes.Add("class", "page-item");
                 }
                 var currentA = new TagBuilder("a");
-                var currentUrl = _linkGenerator.GetPathByAction("Index", controllerName, new { pageNo = number, category = category });
+                var currentUrl = _linkGenerator.GetPathByAction("Index", controllerName, new { pageNo = number, category });
                 currentA.Attributes.Add("href", currentUrl);
                 currentA.Attributes["class"] = "page-link ajax-link";
                 currentA.Attributes["id"] = $"number{number}";

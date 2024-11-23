@@ -78,7 +78,7 @@ namespace WEB_253505_Stanishewski.UI
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -87,6 +87,8 @@ namespace WEB_253505_Stanishewski.UI
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
             app.MapRazorPages();
 
             app.Run();

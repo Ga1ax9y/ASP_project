@@ -6,6 +6,8 @@ using WEB_253505_Stanishewski.UI.Services.FileService;
 using WEB_253505_Stanishewski.UI.HelperClasses;
 using WEB_253505_Stanishewski.UI.Services.Authentication;
 using WEB_253505_Stanishewski.UI.Services.Authorization;
+using WEB_253505_Stanishewski.Domain.Entities;
+using WEB_253505_Stanishewski.UI.ViewComponents;
 
 namespace WEB_253505_Stanishewski.UI.Extensions
 {
@@ -21,8 +23,12 @@ namespace WEB_253505_Stanishewski.UI.Extensions
             builder.Services.AddHttpClient<IFileService, ApiFileService>(opt =>opt.BaseAddress = new Uri($"{uriData.ApiUri}Files"));
             builder.Services.Configure<KeycloakData>(builder.Configuration.GetSection("Keycloak"));
             builder.Services.AddHttpClient<ITokenAccessor, KeycloakTokenAccessor>();
+            builder.Services.AddScoped<CartViewComponent>();
             builder.Services.AddHttpClient<IAuthService, KeycloakAuthService>();
+            builder.Services.AddScoped<CartContainer, SessionCart>();
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession();
         }
     }
 

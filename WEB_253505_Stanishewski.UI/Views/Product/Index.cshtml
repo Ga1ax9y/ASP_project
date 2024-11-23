@@ -51,7 +51,10 @@
     </ul>
 </div>
 
-<div class="row">
+<div id="gameList">
+    <partial name="_GameListPartial" />
+</div>
+@* <div class="row">
     @foreach (var item in Model.Items)
     {
         <div class="col-md-4 mb-4">
@@ -60,11 +63,11 @@
                     <img src="@item.Image" class="card-img-top" alt="@item.Title" style=" object-fit: fill; height: 350px;"/>
                     <h5 class="card-title">@item.Title</h5>
                     <p class="card-text">@item.Description</p>
-                    <a asp-controller="Cart"
-                       asp-action="Add"
-                       asp-route-id="@item.Id"
-                       asp-route-returnurl="@returnUrl"
-                       class="btn btn-primary">Добавить в корзину</a>
+                    <form asp-controller="Cart" asp-action="Add" method="post">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                        <button type="submit" class="btn btn-primary">Добавить в корзину</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -90,4 +93,4 @@
             </a>
         </li>
     </ul>
-</nav>
+</nav> *@

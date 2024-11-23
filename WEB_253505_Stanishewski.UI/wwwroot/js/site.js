@@ -19,3 +19,16 @@ $(document).ready(function () {
     })
 
 })
+
+function updateCartSummary() {
+    $.ajax({
+        url: '/Cart/UpdateCartSummary', // Убедитесь, что URL правильный
+        type: 'POST',
+        success: function (html) {
+            $('#cart-summary').html(html);
+        },
+        error: function () {
+            alert('Ошибка обновления корзины');
+        }
+    });
+}

@@ -14,7 +14,9 @@
 <div class="d-flex align-items-center">
     @if (User.Identity.IsAuthenticated)
     {
-       // @await Component.InvokeAsync("Cart")
+        <div id="cart-summary">
+            @await Component.InvokeAsync("Cart")
+        </div>
         <div class="dropdown ms-4 nav-color">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 @name
