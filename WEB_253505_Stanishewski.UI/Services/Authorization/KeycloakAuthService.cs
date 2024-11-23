@@ -46,7 +46,7 @@ namespace WEB_253505_Stanishewski.UI.Services.Authorization
             {
                 return (false, ex.Message);
             }
-            var avatarUrl = "/images/user-regular.svg";
+            var avatarUrl = "/Images/default-profile-picture.png";
             // сохранить Avatar, если аватар был передан при регистрации
             if (avatar != null)
             {

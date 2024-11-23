@@ -1,11 +1,8 @@
 ﻿namespace WEB_253505_Stanishewski.API.Models
 {
-    namespace Web_253505_Sniazhko.API.Models
+    internal class AuthServerData
     {
-        internal class AuthServerData
-        {
-            public string Host { get; set; }
-            public string Realm { get; set; }
-        }
+        public string Host { get; set; }
+        public string Realm { get; set; }
     }
 }

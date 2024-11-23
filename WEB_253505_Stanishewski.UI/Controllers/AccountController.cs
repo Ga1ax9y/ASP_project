@@ -35,12 +35,9 @@ namespace WEB_253505_Stanishewski.UI.Controllers
         public async Task Login()
         {
 
-            await HttpContext.ChallengeAsync(
-            OpenIdConnectDefaults.AuthenticationScheme,
-            new AuthenticationProperties
+            await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
             {
-                RedirectUri = Url.Action("Index",
-            "Home")
+                RedirectUri = Url.Action("Index", "Home")
             });
 
 
@@ -48,12 +45,10 @@ namespace WEB_253505_Stanishewski.UI.Controllers
         //[HttpPost]
         public async Task Logout()
         {
-            await
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
             {
-                RedirectUri = Url.Action("Index",
-"Home")
+                RedirectUri = Url.Action("Index", "Home")
             });
         }
     }

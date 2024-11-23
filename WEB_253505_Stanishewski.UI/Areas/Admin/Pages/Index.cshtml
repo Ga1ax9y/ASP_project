@@ -32,28 +32,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Game) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                <img src="@item.Image" alt="Game Image" style=" object-fit: cover; height: 200px;" />
-             </td>
-
-            <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-success">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Game)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <img src="@item.Image" alt="Game Image" style=" object-fit: cover; height: 200px;" />
+                </td>
+                <td>
+                    <a class="btn btn-warning" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-info" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 

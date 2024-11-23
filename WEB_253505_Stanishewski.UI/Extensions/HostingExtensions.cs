@@ -22,6 +22,7 @@ namespace WEB_253505_Stanishewski.UI.Extensions
             builder.Services.Configure<KeycloakData>(builder.Configuration.GetSection("Keycloak"));
             builder.Services.AddHttpClient<ITokenAccessor, KeycloakTokenAccessor>();
             builder.Services.AddHttpClient<IAuthService, KeycloakAuthService>();
+            builder.Services.AddHttpContextAccessor();
         }
     }
 

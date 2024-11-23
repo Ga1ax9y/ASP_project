@@ -4,15 +4,22 @@
 @{
     var name = User.Claims.FirstOrDefault(c => c.Type.Equals("preferred_username", StringComparison.OrdinalIgnoreCase))?.Value;
     var avatar = User.Claims.FirstOrDefault(c => c.Type.Equals("avatar", StringComparison.OrdinalIgnoreCase))?.Value;
+    var test = "";
+    foreach (var claim in User.Claims)
+    {
+        test+=($"{claim.Type}: {claim.Value}\n");
+    }
 }
+<p hidden>@test</p>
 <div class="d-flex align-items-center">
     @if (User.Identity.IsAuthenticated)
     {
-        @await Component.InvokeAsync("Cart")
+       // @await Component.InvokeAsync("Cart")
         <div class="dropdown ms-4 nav-color">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 @name
                 <img src="@avatar" width="20" class="rounded nav-color" />
+                
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li>

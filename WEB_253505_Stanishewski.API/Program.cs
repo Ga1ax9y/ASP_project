@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using WEB_253505_Stanishewski.API.Data;
-using WEB_253505_Stanishewski.API.Models.Web_253505_Sniazhko.API.Models;
+using WEB_253505_Stanishewski.API.Models;
 using WEB_253505_Stanishewski.API.Services.CategoryService;
 using WEB_253505_Stanishewski.API.Services.GameService;
 using WEB_253505_Stanishewski.Domain.Entities;

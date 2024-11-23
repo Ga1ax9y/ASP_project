@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
@@ -21,13 +22,16 @@ namespace WEB_253505_Stanishewski.UI
 
             var uriData = builder.Configuration.GetSection("UriData").Get<UriData>();
 
-
+            builder.Services.AddRazorPages();
+            builder.Services.AddRazorComponents();
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            
             var keycloakData = builder.Configuration.GetSection("Keycloak").Get<KeycloakData>();
 
             builder.Services
@@ -48,16 +52,16 @@ namespace WEB_253505_Stanishewski.UI
                     options.ResponseType = OpenIdConnectResponseType.Code;
                     options.Scope.Add("openid"); // Customize scopes as needed 
                     options.SaveTokens = true;
-                    options.RequireHttpsMetadata = false; 
-            
+                    options.RequireHttpsMetadata = false;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.ClaimActions.MapJsonKey("avatar", "avatar");
                     options.MetadataAddress =
             $"{keycloakData.Host}/realms/{keycloakData.Realm}/.well-known/openid-configuration"; 
             });
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddControllersWithViews();
             builder.RegisterCustomServices(uriData);
-
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -78,6 +82,7 @@ namespace WEB_253505_Stanishewski.UI
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseWebSockets();
 
             app.MapControllerRoute(
                 name: "default",
