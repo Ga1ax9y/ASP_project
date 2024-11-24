@@ -11,7 +11,7 @@ namespace WEB_253505_Stanishewski.UI.Controllers
     {
         private readonly IGameService _gameService;
         private readonly ICategoryService _categoryService;
-        public ProductController(ICategoryService categoryService, IGameService gameService)
+        public ProductController(IGameService gameService,ICategoryService categoryService)
         {
             _gameService = gameService;
             _categoryService = categoryService;
@@ -19,12 +19,13 @@ namespace WEB_253505_Stanishewski.UI.Controllers
         [HttpGet("{category?}")]
         public async Task<IActionResult> Index(string? category, int pageNo=1)
         {
-            var productResponse = await _gameService.GetProductListAsync(category, pageNo);
-            if (!productResponse.Successfull)
-                return NotFound(productResponse.ErrorMessage);
             var categoriesResponse = await _categoryService.GetCategoryListAsync();
             if (!categoriesResponse.Successfull)
                 return NotFound(categoriesResponse.ErrorMessage);
+
+            var productResponse = await _gameService.GetProductListAsync(category, pageNo);
+            if (!productResponse.Successfull)
+                return NotFound(productResponse.ErrorMessage);
             var categories = categoriesResponse.Data;
             ViewData["currentCategory"] = categories.FirstOrDefault(c => c.NormalizedName == category)?.Name ?? "Все";
             ViewData["categories"] = categories;
