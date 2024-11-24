@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Serilog;
 using System.Configuration;
 using WEB_253505_Stanishewski.UI.APIConnection;
 using WEB_253505_Stanishewski.UI.APIConnection.Services;
@@ -61,9 +62,17 @@ namespace WEB_253505_Stanishewski.UI
 
             builder.Services.AddControllersWithViews();
             builder.RegisterCustomServices(uriData);
-            
-            var app = builder.Build();
+            builder.Services.AddSerilog();
 
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json")
+                    .Build())
+                .CreateLogger();
+            Log.Logger.Information("Loger has started");
+            var app = builder.Build();
+            
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -83,14 +92,14 @@ namespace WEB_253505_Stanishewski.UI
 
             app.UseAuthorization();
             app.UseWebSockets();
-
+            
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
             app.MapRazorPages();
-
+            app.UseMiddleware<LoggingMiddleware>();
             app.Run();
         }
     }
