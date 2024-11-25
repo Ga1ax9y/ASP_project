@@ -4,6 +4,7 @@
 @{
     var name = User.Claims.FirstOrDefault(c => c.Type.Equals("preferred_username", StringComparison.OrdinalIgnoreCase))?.Value;
     var avatar = User.Claims.FirstOrDefault(c => c.Type.Equals("avatar", StringComparison.OrdinalIgnoreCase))?.Value;
+
     var test = "";
     foreach (var claim in User.Claims)
     {
