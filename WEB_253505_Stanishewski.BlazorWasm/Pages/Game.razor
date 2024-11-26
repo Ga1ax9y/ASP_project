@@ -1,0 +1,24 @@
+﻿@page "/game"
+@attribute [Authorize]
+@inject IDataService DataService
+
+<PageTitle>Dishes</PageTitle>
+
+<CategoryLayout />
+<GameLayout GameSelected="OnDishSelected" />
+<Pager />
+<GameDetails SelectedGame="SelectedDish" />
+
+@code {
+    private WEB_253505_Stanishewski.Domain.Entities.Game? SelectedDish { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await DataService.GetProductListAsync();
+    }
+
+    private void OnDishSelected(int id)
+    {
+        SelectedDish = DataService.Games.FirstOrDefault(d => d.Id == id);
+    }
+}

@@ -1,0 +1,16 @@
+﻿﻿<div class="card" style="width: 18rem;">
+    @if (SelectedGame != null)
+    {
+        <img src="@SelectedGame.Image" class="card-img-top" alt="@SelectedGame.Title">
+        <div class="card-body">
+            <h5 class="card-title">@SelectedGame.Title</h5>
+            <p class="card-text">@SelectedGame.Description</p>
+            <span class="badge bg-secondary">@SelectedGame.Price Br</span>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Game? SelectedGame { get; set; }
+}

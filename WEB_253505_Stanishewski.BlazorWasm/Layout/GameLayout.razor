@@ -1,0 +1,61 @@
+﻿@inject IDataService DataService
+@implements IDisposable
+
+
+@if (DataService.Games == null || !DataService.Success)
+{
+    <p><em>Loading...</em></p>
+    @if (!string.IsNullOrEmpty(DataService.ErrorMessage))
+    {
+        <p><strong>Error:</strong> @DataService.ErrorMessage</p>
+    }
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in DataService.Games)
+            {
+                <tr>
+                    <td>@game.Title</td>
+                    <td>@game.Description</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => SelectGame(game.Id)">
+                            <i class="bi bi-search"></i> Подробнее
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public EventCallback<int> GameSelected { get; set; }
+
+    private async Task SelectGame(int id)
+    {
+        if (GameSelected.HasDelegate)
+        {
+            await GameSelected.InvokeAsync(id);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+}

@@ -47,6 +47,15 @@ namespace WEB_253505_Stanishewski.API
             {
                 opt.AddPolicy("admin", p => p.RequireRole("POWER-USER"));
             });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
             string connectionString = builder.Configuration.GetConnectionString("Default");  
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
 
@@ -69,6 +78,7 @@ namespace WEB_253505_Stanishewski.API
             app.UseAuthorization();
 
             app.UseStaticFiles();
+            app.UseCors("AllowAll");
             app.MapControllers();
 
             app.Run();
