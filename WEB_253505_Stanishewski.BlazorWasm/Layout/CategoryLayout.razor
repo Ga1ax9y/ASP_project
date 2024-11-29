@@ -1,5 +1,4 @@
-﻿﻿
-@inject IDataService DataService
+﻿@inject IDataService DataService﻿
 @implements IDisposable
 
 <div class="dropdown">
@@ -7,10 +6,29 @@
         @DataService.SelectedCategory?.Name
     </button>
     <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
-        <li><a class="dropdown-item" href="javascript:void(0);" @onclick="() => OnCategorySelected(null)">Все категории</a></li>
-        @foreach (var category in DataService.Categories)
+        <li>
+            <a class="dropdown-item" href="javascript:void(0);" @onclick="() => OnCategorySelected(null)">
+                Все категории
+            </a>
+        </li>
+        @if (DataService.Categories?.Any() == true)
         {
-            <li><a class="dropdown-item" href="javascript:void(0);" @onclick="() => OnCategorySelected(category)">@category.Name</a></li>
+            @foreach (var category in DataService.Categories)
+            {
+                <li>
+                    <a class="dropdown-item" href="javascript:void(0);" @onclick="() => OnCategorySelected(category)">
+                        @category.Name
+                    </a>
+                </li>
+            }
+        }
+        else
+        {
+            <li>
+                <a class="dropdown-item disabled" href="javascript:void(0);">
+                    Нет доступных категорий
+                </a>
+            </li>
         }
     </ul>
 </div>
@@ -25,6 +43,7 @@
     {
         DataService.SelectedCategory = category;
         await DataService.GetProductListAsync();
+        StateHasChanged(); // Обновление интерфейса после изменения данных
     }
     public void Dispose()
     {

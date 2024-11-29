@@ -60,10 +60,18 @@ namespace WEB_253505_Stanishewski.BlazorWasm.Services
                 {
                     queryData.Add(KeyValuePair.Create("pageSize", _pageSize.ToString()));
                 }
-                var fullRoute = queryData.Count > 0
-                    ? QueryHelpers.AddQueryString(route.ToString(), queryData)
-                   : route.ToString();
-
+                //var fullRoute = queryData.Count > 0
+                //    ? QueryHelpers.AddQueryString(route.ToString(), queryData)
+                //   : route.ToString();
+                string fullRoute;
+                if (queryData.Count > 0)
+                {
+                    fullRoute = QueryHelpers.AddQueryString(route.ToString(), queryData);
+                }
+                else
+                {
+                    fullRoute = route.ToString();
+                }
                 var response = await _httpClient.GetFromJsonAsync<ResponseData<ListModel<Game>>>($"{_apiUrl}/{fullRoute}");
                 if (response != null && response.Successfull && response.Data != null)
                 {

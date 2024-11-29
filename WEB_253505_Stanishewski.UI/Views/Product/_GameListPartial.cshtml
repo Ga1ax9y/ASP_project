@@ -24,7 +24,7 @@
                         <input type="hidden" name="id" value="@item.Id" />
                         <input type="hidden" name="returnUrl"
                                value="@Url.Action("Index", "Product", new { pageNo = Model.CurrentPage, category = category ?? null })" />
-                        <button type="submit" class="btn btn-primary">В корзину</button>
+                        <button type="submit" class="btn btn-outline-primary">В корзину</button>
                     </form>
 @*                     <a  asp-controller="Cart" 
                        asp-action="Add"

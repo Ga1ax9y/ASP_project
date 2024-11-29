@@ -25,7 +25,6 @@ namespace WEB_253505_Stanishewski.UI.Controllers
         }
         [HttpPost]
         [Authorize]
-        //[Route("[controller]/Add/{id:int}")]
         public async Task<ActionResult> Add(int id, string returnUrl)
         {
             var data = await _productService.GetProductByIdAsync(id);
@@ -37,7 +36,6 @@ namespace WEB_253505_Stanishewski.UI.Controllers
         }
         [HttpPost]
         [Authorize]
-        //[Route("[controller]/Add/{id:int}")]
         public async Task<ActionResult> Remove(int id, string returnUrl)
         {
             _cart.RemoveItems(id);
@@ -45,7 +43,6 @@ namespace WEB_253505_Stanishewski.UI.Controllers
         }
         [HttpPost]
         [Authorize]
-        //[Route("[controller]/Add/{id:int}")]
         public async Task<ActionResult> Clear(string returnUrl)
         {
             _cart.ClearAll();

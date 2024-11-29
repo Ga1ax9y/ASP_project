@@ -2,23 +2,23 @@
 @attribute [Authorize]
 @inject IDataService DataService
 
-<PageTitle>Dishes</PageTitle>
+<PageTitle>Games</PageTitle>
 
 <CategoryLayout />
-<GameLayout GameSelected="OnDishSelected" />
+<GameLayout GameSelected="OnGameSelected" />
 <Pager />
-<GameDetails SelectedGame="SelectedDish" />
+<GameDetails SelectedGame="SelectedGame" />
 
 @code {
-    private WEB_253505_Stanishewski.Domain.Entities.Game? SelectedDish { get; set; }
+    private WEB_253505_Stanishewski.Domain.Entities.Game? SelectedGame { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await DataService.GetProductListAsync();
     }
 
-    private void OnDishSelected(int id)
+    private void OnGameSelected(int id)
     {
-        SelectedDish = DataService.Games.FirstOrDefault(d => d.Id == id);
+        SelectedGame = DataService.Games.FirstOrDefault(d => d.Id == id);
     }
 }
